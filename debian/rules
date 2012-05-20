@@ -50,7 +50,7 @@ install: build
 	dh_installdirs
 
 	# Add here commands to install the package into debian/myprogram.
-	$(MAKE) INSTALL_ROOT=$(CURDIR)/debian/librefm install
+	$(MAKE) INSTALL_ROOT=$(CURDIR)/debian/earie install
 
 
 # Build architecture-independent files here.

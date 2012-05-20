@@ -4,7 +4,7 @@ Priority: extra
 Maintainer: Michael Sheldon <elleo@gnu.org>
 Build-Depends: debhelper (>= 7), dpatch, libqt4-dev
 Standards-Version: 3.8.4
-Homepage: http://libre.fm
+Homepage: http://blog.mikeasoft.com
 
 Package: earie
 Architecture: any
