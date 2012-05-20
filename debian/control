@@ -1,0 +1,19 @@
+Source: earie
+Section: user/Other
+Priority: extra
+Maintainer: Michael Sheldon <elleo@gnu.org>
+Build-Depends: debhelper (>= 7), dpatch, libqt4-dev
+Standards-Version: 3.8.4
+Homepage: http://libre.fm
+
+Package: earie
+Architecture: any
+Depends: qt-components, gstreamer0.10-plugins-good, ${shlibs:Depends}, ${misc:Depends}
+Description: Find out what music is playing.
+ Simply hold your phone up and record whatever music you currently
+ hear and Earie will let you know what song it is and who it's by.
+ If you're musically talented you can even hum whatever tune you
+ have stuck in your head and it'll make a good attempt at finding
+ the song.
+XB-Maemo-Display-Name: Earie
+XB-Maemo-Icon-26:
