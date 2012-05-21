@@ -1,20 +1,25 @@
 TEMPLATE = app
 QT += declarative
-QT += phonon
 CONFIG += meegotouch
 TARGET = "earie"
 DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
-SOURCES += main.cpp 
+HEADERS += earie.h
+SOURCES += main.cpp \
+earie.cpp
 #FORMS#
 
   unix {
+    CONFIG += link_pkgconfig
+    PKGCONFIG += gstreamer-0.10
+    PKGCONFIG += gstreamer-app-0.10
     #VARIABLES
     isEmpty(PREFIX) {
         PREFIX = /usr
   }
+
 BINDIR = $$PREFIX/bin
 DATADIR =$$PREFIX/share
 

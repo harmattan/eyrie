@@ -6,6 +6,8 @@ PageStackWindow {
 	property int pageMargin: 16;
 
 	initialPage: RecordPage { }
+
+	signal record();
 	
 	function openFile(file) {
 		var component = Qt.createComponent(file);

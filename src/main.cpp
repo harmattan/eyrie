@@ -3,10 +3,11 @@
 #include <QDeclarativeView>
 #include <QDebug>
 #include <iostream>
+#include "earie.h"
+#include <gst/gst.h>
 
 
-void msgHandler( QtMsgType type, const char* msg )
-{
+void msgHandler(QtMsgType type, const char* msg) {
 	const char symbols[] = { 'I', 'E', '!', 'X' };
 	QString output = QString("[%1] %2").arg( symbols[type] ).arg( msg );
 	std::cerr << output.toStdString() << std::endl;
@@ -16,15 +17,22 @@ void msgHandler( QtMsgType type, const char* msg )
 
 int main(int argc, char *argv[])
 {
+	gst_init(&argc, &argv);
 	qInstallMsgHandler( msgHandler );
 	QApplication app(argc, argv);
 	app.setApplicationName("Earie");
 	QDeclarativeView view;
+	Earie ear;
 	view.setSource(QUrl::fromLocalFile("Earie.qml"));
 	//view.setSource(QUrl::fromLocalFile(DATADIR "/earie/Earie.qml"));
 	QObject *root = (QObject*)(view.rootObject());
 	QObject::connect((QObject*)view.engine(), SIGNAL(quit()), &app, SLOT(quit()));
+	QObject::connect((QObject*)view.engine(), SIGNAL(quit()), &app, SLOT(quit()));
+	QObject::connect(root, SIGNAL(record()), &ear, SLOT(record()));
+
 	view.showFullScreen();
-	return app.exec();
+	int ret = app.exec();
+	gst_deinit();
+	return ret;
 }
 
