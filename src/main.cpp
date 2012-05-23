@@ -3,7 +3,7 @@
 #include <QDeclarativeView>
 #include <QDebug>
 #include <iostream>
-#include "earie.h"
+#include "eyrie.h"
 #include <gst/gst.h>
 
 
@@ -20,12 +20,12 @@ int main(int argc, char *argv[])
 	gst_init(&argc, &argv);
 	qInstallMsgHandler( msgHandler );
 	QApplication app(argc, argv);
-	app.setApplicationName("Earie");
+	app.setApplicationName("Eyrie");
 	QDeclarativeView view;
-	view.setSource(QUrl::fromLocalFile("Earie.qml"));
-	//view.setSource(QUrl::fromLocalFile(DATADIR "/earie/Earie.qml"));
+	view.setSource(QUrl::fromLocalFile("Eyrie.qml"));
+	//view.setSource(QUrl::fromLocalFile(DATADIR "/eyrie/Eyrie.qml"));
 	QObject *root = (QObject*)(view.rootObject());
-	Earie ear(root);
+	Eyrie ear(root);
 	QObject::connect((QObject*)view.engine(), SIGNAL(quit()), &app, SLOT(quit()));
 	QObject::connect((QObject*)view.engine(), SIGNAL(quit()), &app, SLOT(quit()));
 	QObject::connect(root, SIGNAL(record()), &ear, SLOT(record()));

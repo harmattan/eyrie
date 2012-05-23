@@ -9,11 +9,11 @@
 #include <QTimer>
 #include <gst/gst.h>
 
-class Earie : public QObject
+class Eyrie : public QObject
 {
 	Q_OBJECT
 public:
-	explicit Earie(QObject *parent = 0);
+	explicit Eyrie(QObject *parent = 0);
 
 private:
 	GstElement *recbin;

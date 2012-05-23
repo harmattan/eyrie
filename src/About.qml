@@ -6,19 +6,13 @@ Page {
     anchors.margins: rootWin.pageMargin
     tools: commonTools
 
-    Image {
-        source: "earie-logo.png"
-        anchors.horizontalCenter: parent.horizontalCenter
-        z: -1
-    }
-
     Column {
         spacing: 10
         anchors.verticalCenterOffset: 30
         anchors.centerIn: parent
 
         Label {
-            text: "Earie"
+            text: "Eyrie"
             font.pixelSize: 34
         }
 

@@ -1,15 +1,15 @@
 TEMPLATE = app
 QT += declarative
 CONFIG += meegotouch
-TARGET = "earie"
+TARGET = "eyrie"
 DEPENDPATH += .
 INCLUDEPATH += . \
 ../../echoprint-codegen/src/
 
 # Input
-HEADERS += earie.h
+HEADERS += eyrie.h
 SOURCES += main.cpp \
-earie.cpp
+eyrie.cpp
 #FORMS#
 
   unix {
@@ -20,7 +20,7 @@ earie.cpp
     LIBS += libcodegen.so.4
     #VARIABLES
     isEmpty(PREFIX) {
-        PREFIX = /opt/earie
+        PREFIX = /opt/eyrie
   }
 
 BINDIR = $$PREFIX/bin
@@ -59,4 +59,4 @@ INSTALLS += target qmlgui desktop service iconxpm iconScale image
 
 OTHER_FILES += \
     About.qml \
-    Earie.qml 
+    Eyrie.qml

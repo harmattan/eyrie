@@ -10,16 +10,16 @@
 #include <gst/app/gstappsink.h>
 #include <Codegen.h>
 #include <string.h>
-#include "earie.h"
+#include "eyrie.h"
 
 
-Earie::Earie(QObject *parent) : QObject(parent) {
+Eyrie::Eyrie(QObject *parent) : QObject(parent) {
 	recbin = NULL;
 	timer = new QTimer(this);
 }
 
 
-void Earie::record() {
+void Eyrie::record() {
 	QVariant ret;
 	if(recbin != NULL) {
 		qDebug() << "Ending recording";
@@ -41,7 +41,7 @@ void Earie::record() {
 }
 
 
-void Earie::process() {
+void Eyrie::process() {
 	qDebug() << "Ending recording";
 	if(recbin == NULL) {
 		return;
@@ -73,7 +73,7 @@ void Earie::process() {
 }
 
 
-void Earie::parseResponse(QNetworkReply *reply) {
+void Eyrie::parseResponse(QNetworkReply *reply) {
 	QVariant ret;
 	qDebug() << "Parsing network response";
 	bool ok;
@@ -102,7 +102,7 @@ void Earie::parseResponse(QNetworkReply *reply) {
 }
 
 
-void Earie::showImage(QNetworkReply *reply) {
+void Eyrie::showImage(QNetworkReply *reply) {
 	QJson::Parser parser;
 	bool ok;
 	QVariantMap result = parser.parse(reply->readAll(), &ok).toMap();
