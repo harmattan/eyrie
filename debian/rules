@@ -50,7 +50,7 @@ install: build
 	dh_installdirs
 
 	# Add here commands to install the package into debian/myprogram.
-	$(MAKE) INSTALL_ROOT=$(CURDIR)/debian/earie install
+	$(MAKE) INSTALL_ROOT=$(CURDIR)/debian/eyrie install
 
 
 # Build architecture-independent files here.
@@ -83,7 +83,7 @@ binary-arch: install
 #	dh_perl
 #	dh_makeshlibs
 	dh_installdeb
-	dh_shlibdeps
+	LD_LIBRARY_PATH=$(CURDIR)/debian/eyrie/opt/eyrie/lib/ dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb

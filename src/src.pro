@@ -30,7 +30,7 @@ DEFINES += DATADIR=\\\"$$DATADIR\\\" PKGDATADIR=\\\"$$PKGDATADIR\\\"
 
 #MAKE INSTALL
 
-INSTALLS += target qmlgui desktop service icon image
+INSTALLS += target qmlgui desktop service icon image lib
 
   target.path =$$BINDIR
 
