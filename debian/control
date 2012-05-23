@@ -8,7 +8,7 @@ Homepage: http://blog.mikeasoft.com
 
 Package: eyrie
 Architecture: any
-Depends: qt-components, gstreamer0.10-plugins-good, libqjson, ${shlibs:Depends}, ${misc:Depends}
+Depends: qt-components, gstreamer0.10-plugins-good, libqjson0, ${shlibs:Depends}, ${misc:Depends}
 Description: Find out what music is playing.
  Simply hold your phone up and record whatever music you currently
  hear and Eyrie will try work out what song it is and who it's by.
