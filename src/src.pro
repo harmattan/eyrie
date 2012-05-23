@@ -30,7 +30,7 @@ DEFINES += DATADIR=\\\"$$DATADIR\\\" PKGDATADIR=\\\"$$PKGDATADIR\\\"
 
 #MAKE INSTALL
 
-INSTALLS += target qmlgui desktop service icon image lib
+INSTALLS += target qmlgui desktop icon image lib
 
   target.path =$$BINDIR
 
@@ -40,13 +40,10 @@ INSTALLS += target qmlgui desktop service icon image lib
   lib.path = $$PREFIX/lib/
   lib.files += libcodegen.so.4
 
-  desktop.path = $$DATADIR/applications
+  desktop.path = /usr/share/applications
   desktop.files += $${TARGET}.desktop
 
-  service.path = $$DATADIR/dbus-1/services/
-  service.files += com.meego.$${TARGET}.service
-
-  icon.path = $$DATADIR/icons/hicolor/80x80/apps
+  icon.path = /usr/share/icons/hicolor/80x80/apps
   icon.files += $${TARGET}.png
 
   image.path = $$DATADIR/eyrie

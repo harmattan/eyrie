@@ -22,8 +22,7 @@ int main(int argc, char *argv[])
 	QApplication app(argc, argv);
 	app.setApplicationName("Eyrie");
 	QDeclarativeView view;
-	view.setSource(QUrl::fromLocalFile("Eyrie.qml"));
-	//view.setSource(QUrl::fromLocalFile(DATADIR "/eyrie/Eyrie.qml"));
+	view.setSource(QUrl::fromLocalFile(DATADIR "/eyrie/Eyrie.qml"));
 	QObject *root = (QObject*)(view.rootObject());
 	Eyrie ear(root);
 	QObject::connect((QObject*)view.engine(), SIGNAL(quit()), &app, SLOT(quit()));
