@@ -14,6 +14,8 @@
 
 
 Earie::Earie(QObject *parent) : QObject(parent) {
+	recbin = NULL;
+	timer = new QTimer(this);
 }
 
 
@@ -33,7 +35,6 @@ void Earie::record() {
 	recbin = gst_parse_launch("autoaudiosrc ! level ! audioconvert ! audioresample ! appsink name=asink caps=audio/x-raw-float,channels=1,rate=11025,width=32,endianness=1234", &err);
 	sink = gst_bin_get_by_name(GST_BIN(recbin), "asink");
 	gst_element_set_state(recbin, GST_STATE_PLAYING);
-	QTimer *timer = new QTimer(this);
 	timer->setSingleShot(true);
 	connect(timer, SIGNAL(timeout()), this, SLOT(process()));
 	timer->start(25000);
@@ -82,13 +83,36 @@ void Earie::parseResponse(QNetworkReply *reply) {
 	QVariantList songs = response["songs"].toList();
 	if(songs.size() > 0) {
 		QVariantMap song = songs[0].toMap();
+		QString artist_id = song["artist_id"].toString();
 		QString artist = song["artist_name"].toString();
 		QString title = song["title"].toString();
 		qDebug() << artist << title;
 		QMetaObject::invokeMethod(parent(), "setDetails", Q_RETURN_ARG(QVariant, ret), Q_ARG(QVariant, artist), Q_ARG(QVariant, title));
+		QNetworkAccessManager *networkManager = new QNetworkAccessManager();
+		QUrl url(QString("http://developer.echonest.com/api/v4/artist/images?api_key=RIUKSNTIPKUMPHPEO&results=1&id=") + artist_id);
+		QNetworkRequest request;
+		request.setUrl(url);
+		connect(networkManager, SIGNAL(finished(QNetworkReply *)), this, SLOT(showImage(QNetworkReply *)));
+		networkManager->get(request);
 	} else {
 		QMetaObject::invokeMethod(parent(), "setStatus", Q_RETURN_ARG(QVariant, ret), Q_ARG(QVariant, "Sorry, we couldn't work out what\nsong that was."));
 	}
 	recbin = NULL;
 	QMetaObject::invokeMethod(parent(), "resetButton", Q_RETURN_ARG(QVariant, ret));
+}
+
+
+void Earie::showImage(QNetworkReply *reply) {
+	QJson::Parser parser;
+	bool ok;
+	QVariantMap result = parser.parse(reply->readAll(), &ok).toMap();
+	QVariantMap response = result["response"].toMap();
+	QVariantList images = response["images"].toList();
+	if(images.size() > 0) {
+		QVariantMap image = images[0].toMap();
+		QString url = image["url"].toString();
+		qDebug() << url;
+		QVariant ret;
+		QMetaObject::invokeMethod(parent(), "showImage", Q_RETURN_ARG(QVariant, ret), Q_ARG(QVariant, url));
+	}
 }

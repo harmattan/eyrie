@@ -3,18 +3,19 @@ import com.nokia.meego 1.0;
 
 Page {
 	id: recordPage;
-	anchors.margins: rootWin.pageMargin;
+	anchors.margins: 0;
 
 	Column {
 		spacing: 10;
-		anchors.verticalCenterOffset: 30;
-		anchors.centerIn: parent;
+		anchors.bottom: btnFind.top;
+		anchors.bottomMargin: 60;
 		width: parent.width;
 
 		Label {
 			anchors.horizontalCenter: parent.horizontalCenter;
 			visible: rootWin.showStatus;
 			text: rootWin.status;
+			horizontalAlignment: Text.AlignHCenter;
 		}
 
 		Row {
@@ -27,6 +28,7 @@ Page {
 				id: lblArtist;
 				text: rootWin.artist;
 				elide: Text.ElideRight;
+				wrapMode: Text.Wrap;
 			}
 		}
 
@@ -40,15 +42,18 @@ Page {
 				id: lblTrack;
 				text: rootWin.track;
 				elide: Text.ElideRight;
+				wrapMode: Text.Wrap;
 			}
 		}
 	
 	}	
 
 	Button {
-		anchors.bottom: parent.anchors.bottom;
+		id: btnFind;
+		anchors.bottom: parent.bottom;
 		width: parent.width;
 		text: rootWin.buttonText;
+		anchors.margins: rootWin.pageMargin;
 		onClicked: {
 			rootWin.buttonText = "Cancel";
 			rootWin.record();

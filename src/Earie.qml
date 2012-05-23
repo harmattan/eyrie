@@ -7,10 +7,11 @@ PageStackWindow {
 	property string artist;
 	property string track;
 	property string status;
+	property string imageUrl;
 	property bool showDetails: false;
 	property bool showStatus: false;
+	property bool showImage: true;
 	property string buttonText: "Find Song";
-
 
 	initialPage: RecordPage { }
 
@@ -34,6 +35,7 @@ PageStackWindow {
 		track = t;
 		showStatus = false;
 		showDetails = true;
+		showImage = false;
 	}
 
 	function setStatus(s) {
@@ -50,6 +52,25 @@ PageStackWindow {
 
 	function resetButton() {
 		buttonText = "Find Song";
+	}
+
+	function showImage(i) {
+		img.source = i;
+	}
+
+	Image {
+                id: img;
+                width: 480;
+                smooth: true;
+                fillMode: Image.PreserveAspectFit;
+                source: "logo.png";
+                anchors.top: parent.top;
+        }
+
+	Image {
+		anchors.top: img.bottom;
+		source: "enlogo.png";
+		anchors.horizontalCenter: parent.horizontalCenter;
 	}
 
 	ToolBarLayout {
