@@ -30,11 +30,11 @@ DEFINES += DATADIR=\\\"$$DATADIR\\\" PKGDATADIR=\\\"$$PKGDATADIR\\\"
 
 #MAKE INSTALL
 
-INSTALLS += target qmlgui desktop service iconxpm iconScale image
+INSTALLS += target qmlgui desktop service iconScale image
 
   target.path =$$BINDIR
 
-  qmlgui.path = $$DATADIR/librefm
+  qmlgui.path = $$DATADIR/eyrie
   qmlgui.files += *.qml
 
   lib.path = $$PREFIX/lib/
@@ -46,15 +46,11 @@ INSTALLS += target qmlgui desktop service iconxpm iconScale image
   service.path = $$DATADIR/dbus-1/services/
   service.files += com.meego.$${TARGET}.service
 
-  iconxpm.path = $$DATADIR/pixmap
-  iconxpm.files += ../data/maemo/$${TARGET}.xpm
+  icon.path = $$DATADIR/icons/hicolor/80x80/apps
+  icon.files += ../data/scalable/$${TARGET}.png
 
-  iconScale.path = $$DATADIR/icons/hicolor/scalable/apps
-  iconScale.files += ../data/scalable/$${TARGET}.svg
-
-  image.path = $$DATADIR/librefm
+  image.path = $$DATADIR/eyrie
   image.files += *.png
-  image.files += *.svg
 }
 
 OTHER_FILES += \

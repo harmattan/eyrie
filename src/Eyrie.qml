@@ -10,7 +10,6 @@ PageStackWindow {
 	property string imageUrl;
 	property bool showDetails: false;
 	property bool showStatus: false;
-	property bool showImage: true;
 	property string buttonText: "Find Song";
 
 	initialPage: RecordPage { }
@@ -35,13 +34,13 @@ PageStackWindow {
 		track = t;
 		showStatus = false;
 		showDetails = true;
-		showImage = false;
 	}
 
 	function setStatus(s) {
 		status = s;
 		showDetails = false;
 		showStatus = true;
+		img.source = "logo.png";
 	}
 
 	function reset() {
@@ -59,9 +58,9 @@ PageStackWindow {
 	}
 
 	Image {
-		z: -1;
 		id: img;
 		width: 480;
+		height: 577;
 		smooth: true;
 		fillMode: Image.PreserveAspectFit;
 		source: "logo.png";
@@ -69,9 +68,8 @@ PageStackWindow {
 	}
 
 	Image {
-		z: -1;
 		anchors.top: img.bottom;
-		anchors.topMargin: 20;
+		anchors.topMargin: 5;
 		source: "enlogo.png";
 		anchors.horizontalCenter: parent.horizontalCenter;
 	}
