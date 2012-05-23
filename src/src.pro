@@ -30,7 +30,7 @@ DEFINES += DATADIR=\\\"$$DATADIR\\\" PKGDATADIR=\\\"$$PKGDATADIR\\\"
 
 #MAKE INSTALL
 
-INSTALLS += target qmlgui desktop service iconScale image
+INSTALLS += target qmlgui desktop service icon image
 
   target.path =$$BINDIR
 
@@ -47,7 +47,7 @@ INSTALLS += target qmlgui desktop service iconScale image
   service.files += com.meego.$${TARGET}.service
 
   icon.path = $$DATADIR/icons/hicolor/80x80/apps
-  icon.files += ../data/scalable/$${TARGET}.png
+  icon.files += $${TARGET}.png
 
   image.path = $$DATADIR/eyrie
   image.files += *.png
