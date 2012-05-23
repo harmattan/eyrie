@@ -4,6 +4,7 @@ import com.nokia.meego 1.0;
 Page {
 	id: recordPage;
 	anchors.margins: 0;
+	orientationLock: PageOrientation.LockPortrait;
 
 	Column {
 		spacing: 10;

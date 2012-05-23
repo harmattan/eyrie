@@ -16,6 +16,7 @@
 Eyrie::Eyrie(QObject *parent) : QObject(parent) {
 	recbin = NULL;
 	timer = new QTimer(this);
+	connect(timer, SIGNAL(timeout()), this, SLOT(process()));
 }
 
 
@@ -36,7 +37,6 @@ void Eyrie::record() {
 	sink = gst_bin_get_by_name(GST_BIN(recbin), "asink");
 	gst_element_set_state(recbin, GST_STATE_PLAYING);
 	timer->setSingleShot(true);
-	connect(timer, SIGNAL(timeout()), this, SLOT(process()));
 	timer->start(25000);
 }
 
@@ -51,9 +51,15 @@ void Eyrie::process() {
 	gst_element_send_event(recbin, gst_event_new_eos());
 	GstBuffer *buf = gst_buffer_new();
 	GstBuffer *tmpbuf;
+	bool recfailed = true;
 	while(!gst_app_sink_is_eos(GST_APP_SINK(sink))) {
 		tmpbuf = gst_app_sink_pull_buffer(GST_APP_SINK(sink));
 		buf = gst_buffer_join(buf, tmpbuf);
+		recfailed = false;
+	}
+	if(recfailed) {
+		QMetaObject::invokeMethod(parent(), "setStatus", Q_RETURN_ARG(QVariant, ret), Q_ARG(QVariant, "Sorry, the recording failed."));
+		return;
 	}
 	const float *pcm = (const float *) GST_BUFFER_DATA(buf);
 	Codegen *codegen = new Codegen(pcm, GST_BUFFER_SIZE(buf) / sizeof(float), 0);
@@ -69,6 +75,7 @@ void Eyrie::process() {
 	connect(networkManager, SIGNAL(finished(QNetworkReply *)), this, SLOT(parseResponse(QNetworkReply *)));
 	networkManager->post(request, params);
 	gst_element_set_state(recbin, GST_STATE_NULL);
+	recbin = NULL;
 	QMetaObject::invokeMethod(parent(), "setStatus", Q_RETURN_ARG(QVariant, ret), Q_ARG(QVariant, "Looking up song via EchoNest..."));
 }
 
@@ -84,8 +91,8 @@ void Eyrie::parseResponse(QNetworkReply *reply) {
 	if(songs.size() > 0) {
 		QVariantMap song = songs[0].toMap();
 		QString artist_id = song["artist_id"].toString();
-		QString artist = song["artist_name"].toString();
-		QString title = song["title"].toString();
+		QString artist = song["artist_name"].toString().trimmed();
+		QString title = song["title"].toString().trimmed();
 		qDebug() << artist << title;
 		QMetaObject::invokeMethod(parent(), "setDetails", Q_RETURN_ARG(QVariant, ret), Q_ARG(QVariant, artist), Q_ARG(QVariant, title));
 		QNetworkAccessManager *networkManager = new QNetworkAccessManager();
@@ -97,7 +104,6 @@ void Eyrie::parseResponse(QNetworkReply *reply) {
 	} else {
 		QMetaObject::invokeMethod(parent(), "setStatus", Q_RETURN_ARG(QVariant, ret), Q_ARG(QVariant, "Sorry, we couldn't work out what\nsong that was."));
 	}
-	recbin = NULL;
 	QMetaObject::invokeMethod(parent(), "resetButton", Q_RETURN_ARG(QVariant, ret));
 }
 
