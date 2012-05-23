@@ -18,8 +18,8 @@ PageStackWindow {
 	signal record();
 
 	Component.onCompleted: {
-                theme.inverted = true;
-        }
+		theme.inverted = true;
+	}
 	
 	function openFile(file) {
 		var component = Qt.createComponent(file);
@@ -59,16 +59,19 @@ PageStackWindow {
 	}
 
 	Image {
-                id: img;
-                width: 480;
-                smooth: true;
-                fillMode: Image.PreserveAspectFit;
-                source: "logo.png";
-                anchors.top: parent.top;
-        }
+		z: -1;
+		id: img;
+		width: 480;
+		smooth: true;
+		fillMode: Image.PreserveAspectFit;
+		source: "logo.png";
+		anchors.top: parent.top;
+	}
 
 	Image {
+		z: -1;
 		anchors.top: img.bottom;
+		anchors.topMargin: 20;
 		source: "enlogo.png";
 		anchors.horizontalCenter: parent.horizontalCenter;
 	}
