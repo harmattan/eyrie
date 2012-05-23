@@ -22,10 +22,10 @@ int main(int argc, char *argv[])
 	QApplication app(argc, argv);
 	app.setApplicationName("Earie");
 	QDeclarativeView view;
-	Earie ear;
 	view.setSource(QUrl::fromLocalFile("Earie.qml"));
 	//view.setSource(QUrl::fromLocalFile(DATADIR "/earie/Earie.qml"));
 	QObject *root = (QObject*)(view.rootObject());
+	Earie ear(root);
 	QObject::connect((QObject*)view.engine(), SIGNAL(quit()), &app, SLOT(quit()));
 	QObject::connect((QObject*)view.engine(), SIGNAL(quit()), &app, SLOT(quit()));
 	QObject::connect(root, SIGNAL(record()), &ear, SLOT(record()));

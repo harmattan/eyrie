@@ -3,7 +3,8 @@ QT += declarative
 CONFIG += meegotouch
 TARGET = "earie"
 DEPENDPATH += .
-INCLUDEPATH += .
+INCLUDEPATH += . \
+../../echoprint-codegen/src/
 
 # Input
 HEADERS += earie.h
@@ -15,9 +16,11 @@ earie.cpp
     CONFIG += link_pkgconfig
     PKGCONFIG += gstreamer-0.10
     PKGCONFIG += gstreamer-app-0.10
+    PKGCONFIG += QJson
+    LIBS += libcodegen.so.4
     #VARIABLES
     isEmpty(PREFIX) {
-        PREFIX = /usr
+        PREFIX = /opt/earie
   }
 
 BINDIR = $$PREFIX/bin
@@ -33,6 +36,9 @@ INSTALLS += target qmlgui desktop service iconxpm iconScale image
 
   qmlgui.path = $$DATADIR/librefm
   qmlgui.files += *.qml
+
+  lib.path = $$PREFIX/lib/
+  lib.files += libcodegen.so.4
 
   desktop.path = $$DATADIR/applications
   desktop.files += $${TARGET}.desktop
