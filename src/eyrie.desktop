@@ -4,7 +4,7 @@ Version=0.1
 Name=Eyrie
 GenericName=Eyrie
 Comment=Find out the name of the song you're currently hearing
-Exec=/usr/bin/invoker --type=e -s /opt/eyrie/bin/eyrie.sh
+Exec=/usr/bin/invoker --type=e -s /bin/sh /opt/eyrie/bin/eyrie.sh
 Terminal=false
 Type=Application
 Icon=/usr/share/icons/hicolor/80x80/apps/eyrie.png

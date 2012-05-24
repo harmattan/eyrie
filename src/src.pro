@@ -32,7 +32,8 @@ DEFINES += DATADIR=\\\"$$DATADIR\\\" PKGDATADIR=\\\"$$PKGDATADIR\\\"
 
 INSTALLS += target qmlgui desktop icon image lib
 
-  target.path =$$BINDIR
+  target.path = $$BINDIR
+  target.files += $${TARGET}
   target.files += $${TARGET}.sh
 
   qmlgui.path = $$DATADIR/eyrie
