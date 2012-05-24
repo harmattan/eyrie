@@ -1,10 +1,10 @@
 This package was debianized by:
 
-    Michael Sheldon <elleo@gnu.org> on Thu, 30 Jun 2011 12:28:25 +0100
+    Michael Sheldon <elleo@gnu.org> on Wed, 23 May 2012 23:22:23 +0100
 
 It was downloaded from:
 
-    http://libre.fm
+    http://blog.mikeasoft.com
 
 Upstream Author(s):
 
@@ -12,7 +12,7 @@ Upstream Author(s):
 
 Copyright:
 
-    Copyright (C) 2011 Michael Sheldon
+    Copyright (C) 2012 Michael Sheldon
 
 License:
 
@@ -20,5 +20,5 @@ License:
 
 The Debian packaging is:
 
-    Copyright C) 2011, Michael Sheldon <elleo@gnu.org>
+    Copyright C) 2012, Michael Sheldon <elleo@gnu.org>
 
