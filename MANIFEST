@@ -1,0 +1,16 @@
+LICENSE
+eyrie.pro
+src/About.qml
+src/Eyrie.qml
+src/RecordPage.qml
+src/enlogo.png
+src/eyrie.cpp
+src/eyrie.desktop
+src/eyrie.h
+src/eyrie.png
+src/eyrie.sh
+src/icon.svg
+src/logo.png
+src/logo.svg
+src/main.cpp
+src/src.pro
