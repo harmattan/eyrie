@@ -2,8 +2,11 @@ Source: eyrie
 Section: user/Other
 Priority: extra
 Maintainer: Michael Sheldon <elleo@gnu.org>
-Build-Depends: debhelper (>= 7), dpatch, libqt4-dev, libqjson-dev,
-  libgstreamer0.10-dev, libgstreamer-plugins-base0.10-dev
+Build-Depends: debhelper (>= 7), dpatch, 
+  libqt4-dev, libqjson-dev,
+  libboost1.46-dev,
+  libgstreamer0.10-dev, libgstreamer-plugins-base0.10-dev,
+  echoprint-codegen-dev
 Standards-Version: 3.8.4
 Homepage: http://blog.mikeasoft.com
 

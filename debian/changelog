@@ -1,3 +1,10 @@
+eyrie (0.0.0-0~rzr1) UNRELEASED; urgency=low
+
+  * Non-maintainer upload.
+  * http://rzr.online.fr/q/harmattan
+
+ -- Philippe Coval <rzr@gna.org>  Sat, 02 Jun 2012 17:31:08 +0200
+
 eyrie (0.1-1) unstable; urgency=low
 
   * Initial release
