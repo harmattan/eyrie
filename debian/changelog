@@ -1,10 +1,3 @@
-eyrie (0.0-0.0~rzr1) UNRELEASED; urgency=low
-
-  * Non-maintainer upload.
-  * 
-
- -- Philippe Coval <rzr@gna.org>  Thu, 31 May 2012 08:59:31 +0200
-
 eyrie (0.1-1) unstable; urgency=low
 
   * Initial release
