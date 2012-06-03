@@ -1,3 +1,12 @@
+eyrie (0.2-1) unstable; urgency=low
+
+  * Add recording waveform
+  * Assess audio every 10 seconds for a maximum of 40 seconds (replaces
+    previous 25 second single assessment).
+  * Add about page and privacy policy.
+
+ -- Michael Sheldon <elleo@gnu.org>  Sun, 03 Jun 2012 13:03:55 +0100
+
 eyrie (0.1-1) unstable; urgency=low
 
   * Initial release
