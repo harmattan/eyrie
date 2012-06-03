@@ -10,7 +10,7 @@ Page {
 	Column {
 		spacing: 10;
 		anchors.verticalCenterOffset: 30;
-		anchors.centerIn: parent;
+		anchors.top: parent.top;
 		width: parent.width;
 
 		Label {
