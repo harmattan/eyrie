@@ -4,6 +4,7 @@ import com.nokia.meego 1.0;
 Page {
 	id: aboutPage;
 	anchors.margins: rootWin.pageMargin;
+	orientationLock: PageOrientation.LockPortrait;
 	tools: commonTools;
 
 	Column {

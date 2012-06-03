@@ -4,6 +4,7 @@ import com.nokia.meego 1.0;
 Page {
 	id: privacyPage;
 	anchors.margins: 32;
+	orientationLock: PageOrientation.LockPortrait;
 	tools: commonTools;
 
 	Column {
