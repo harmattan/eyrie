@@ -15,9 +15,29 @@
 
 Eyrie::Eyrie(QObject *parent, QDeclarativeView *v) : QObject(parent) {
 	recbin = NULL;
+	buf = NULL;
 	view = v;
+	attempts = 0;
 	timer = new QTimer(this);
+	mutex = new QMutex();
 	connect(timer, SIGNAL(timeout()), this, SLOT(process()));
+}
+
+
+static GstFlowReturn on_buffer(GstAppSink *sink, gpointer data) {
+	Eyrie *e = (Eyrie *) data;
+	if(e->recbin == NULL || gst_app_sink_is_eos(GST_APP_SINK(e->sink))) {
+		return GST_FLOW_OK;
+	}
+	if(e->buf == NULL) {
+		e->buf = gst_buffer_new();
+	}
+	GstBuffer *tmpbuf;
+	tmpbuf = gst_app_sink_pull_buffer(GST_APP_SINK(e->sink));
+	e->mutex->lock();
+	e->buf = gst_buffer_join(e->buf, tmpbuf);
+	e->mutex->unlock();
+	return GST_FLOW_OK;
 }
 
 
@@ -31,43 +51,36 @@ void Eyrie::record() {
 		return;
 	}
 	qDebug() << "Starting recording";
-	QMetaObject::invokeMethod(parent(), "setStatus", Q_RETURN_ARG(QVariant, ret), Q_ARG(QVariant, "Recording..."));
+	QMetaObject::invokeMethod(parent(), "setStatus", Q_RETURN_ARG(QVariant, ret), Q_ARG(QVariant, ""));
 	recbin = gst_pipeline_new("pipeline");
 	GError *err = NULL;
 	recbin = gst_parse_launch("autoaudiosrc ! level ! tee name=t   t. ! queue ! audioconvert ! audioresample ! appsink name=asink caps=audio/x-raw-float,channels=1,rate=11025,width=32,endianness=1234  t. ! queue ! audioconvert ! monoscope ! videobalance saturation=0 ! videoflip method=6 ! ffmpegcolorspace ! xvimagesink name=overlay", &err);
 	sink = gst_bin_get_by_name(GST_BIN(recbin), "asink");
+	GstAppSinkCallbacks appsink_cbs = { NULL, NULL, on_buffer, NULL };
+	gst_app_sink_set_callbacks(GST_APP_SINK(sink), &appsink_cbs, this, NULL);
 	overlay = gst_bin_get_by_name(GST_BIN(recbin), "overlay");
 	gst_x_overlay_set_xwindow_id(GST_X_OVERLAY(overlay), view->effectiveWinId());
-	printf("Window ID: %d\n", view->effectiveWinId());
 	gst_x_overlay_set_render_rectangle(GST_X_OVERLAY(overlay), 655, 140, 100, 200);
 	gst_element_set_state(recbin, GST_STATE_PLAYING);
-	timer->setSingleShot(true);
-	timer->start(25000);
+	attempts = 0;
+	timer->start(10000);
 }
 
 
 void Eyrie::process() {
-	qDebug() << "Ending recording";
 	if(recbin == NULL) {
 		return;
 	}
-	QVariant ret;
-	QMetaObject::invokeMethod(parent(), "setStatus", Q_RETURN_ARG(QVariant, ret), Q_ARG(QVariant, "Generating Echoprint Code"));
-	gst_element_send_event(recbin, gst_event_new_eos());
-	GstBuffer *buf = gst_buffer_new();
-	GstBuffer *tmpbuf;
-	bool recfailed = true;
-	while(!gst_app_sink_is_eos(GST_APP_SINK(sink))) {
-		tmpbuf = gst_app_sink_pull_buffer(GST_APP_SINK(sink));
-		buf = gst_buffer_join(buf, tmpbuf);
-		recfailed = false;
-	}
-	if(recfailed) {
+	if(GST_BUFFER_SIZE(buf) == 0) {
+		endRecording();
+		QVariant ret;
 		QMetaObject::invokeMethod(parent(), "setStatus", Q_RETURN_ARG(QVariant, ret), Q_ARG(QVariant, "Sorry, the recording failed."));
 		return;
 	}
+	mutex->lock();
 	const float *pcm = (const float *) GST_BUFFER_DATA(buf);
 	Codegen *codegen = new Codegen(pcm, GST_BUFFER_SIZE(buf) / sizeof(float), 0);
+	mutex->unlock();
 	std::string code = codegen->getCodeString();
 	QNetworkAccessManager *networkManager = new QNetworkAccessManager();
 	QUrl url("http://developer.echonest.com/api/v4/song/identify");
@@ -79,9 +92,6 @@ void Eyrie::process() {
 	request.setUrl(url);
 	connect(networkManager, SIGNAL(finished(QNetworkReply *)), this, SLOT(parseResponse(QNetworkReply *)));
 	networkManager->post(request, params);
-	gst_element_set_state(recbin, GST_STATE_NULL);
-	recbin = NULL;
-	QMetaObject::invokeMethod(parent(), "setStatus", Q_RETURN_ARG(QVariant, ret), Q_ARG(QVariant, "Looking up song via EchoNest..."));
 }
 
 
@@ -94,6 +104,7 @@ void Eyrie::parseResponse(QNetworkReply *reply) {
 	QVariantMap response = result["response"].toMap();
 	QVariantList songs = response["songs"].toList();
 	if(songs.size() > 0) {
+		endRecording();
 		QVariantMap song = songs[0].toMap();
 		QString artist_id = song["artist_id"].toString();
 		QString artist = song["artist_name"].toString().trimmed();
@@ -107,8 +118,22 @@ void Eyrie::parseResponse(QNetworkReply *reply) {
 		connect(networkManager, SIGNAL(finished(QNetworkReply *)), this, SLOT(showImage(QNetworkReply *)));
 		networkManager->get(request);
 	} else {
-		QMetaObject::invokeMethod(parent(), "setStatus", Q_RETURN_ARG(QVariant, ret), Q_ARG(QVariant, "Sorry, we couldn't work out what\nsong that was."));
+		if(attempts > 2) {
+			endRecording();
+			QMetaObject::invokeMethod(parent(), "setStatus", Q_RETURN_ARG(QVariant, ret), Q_ARG(QVariant, "Sorry, we couldn't work out what\nsong that was."));
+		}
+		attempts++;
 	}
+}
+
+
+void Eyrie::endRecording() {	
+	qDebug() << "Ending recording";
+	timer->stop();
+	gst_element_set_state(recbin, GST_STATE_NULL);
+	buf = NULL;
+	recbin = NULL;
+	QVariant ret;
 	QMetaObject::invokeMethod(parent(), "resetButton", Q_RETURN_ARG(QVariant, ret));
 }
 
