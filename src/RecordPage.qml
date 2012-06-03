@@ -5,11 +5,11 @@ Page {
 	id: recordPage;
 	anchors.margins: 0;
 	orientationLock: PageOrientation.LockPortrait;
+	tools: recordTools;
 
 	Column {
 		spacing: 10;
-		anchors.bottom: btnFind.top;
-		anchors.bottomMargin: 60;
+		anchors.top: parent.top;
 		width: parent.width;
 
 		Label {
@@ -49,16 +49,57 @@ Page {
 	
 	}	
 
-	Button {
-		id: btnFind;
-		anchors.bottom: parent.bottom;
-		width: parent.width;
-		text: rootWin.buttonText;
-		anchors.margins: rootWin.pageMargin;
-		onClicked: {
-			rootWin.buttonText = "Cancel";
-			rootWin.record();
+	ToolBarLayout {
+		id: recordTools;
+		visible: true;
+
+		Button {
+			id: btnFind;
+			width: parent.width - menuIcon.width - 34;
+			anchors.left: parent.left;
+			anchors.leftMargin: 16;
+			text: rootWin.buttonText;
+			onClicked: {
+				rootWin.buttonText = "Cancel";
+				rootWin.record();
+			}
 		}
+
+		Image {
+			id: menuIcon;
+			height: btnFind.height;
+			fillMode: Image.PreserveAspectFit;
+			smooth: true;
+			anchors.right: parent.right;
+			anchors.rightMargin: 10;
+			source: "image://theme/icon-m-toolbar-view-menu-white";
+			MouseArea {
+				anchors.fill: parent;
+				onClicked: toolMenu.open();
+			}
+		}
+
 	}
 
+	Menu {
+		id: toolMenu;
+		content: MenuLayout {
+
+			MenuItem {
+				text: "Privacy Policy";
+				onClicked: {
+					rootWin.fadeImages();
+					rootWin.openFile("Privacy.qml");
+				}
+			}
+
+			MenuItem {
+				text: "About";
+				onClicked: {
+					rootWin.fadeImages();
+					rootWin.openFile("About.qml");
+				}
+			}
+		}
+	}
 }

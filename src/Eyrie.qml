@@ -10,6 +10,7 @@ PageStackWindow {
 	property string imageUrl;
 	property bool showDetails: false;
 	property bool showStatus: false;
+	property bool fade: false;		
 	property string buttonText: "Find Song";
 
 	initialPage: RecordPage { }
@@ -57,6 +58,10 @@ PageStackWindow {
 		img.source = i;
 	}
 
+	function fadeImages() {
+		rootWin.fade = !rootWin.fade
+	}
+
 	Image {
 		id: img;
 		width: 480;
@@ -65,13 +70,30 @@ PageStackWindow {
 		fillMode: Image.PreserveAspectFit;
 		source: "logo.png";
 		anchors.top: parent.top;
+		states: State {
+			when: rootWin.fade == true;
+			PropertyChanges { target: img; opacity: 0.2; }
+		}
+		transitions: Transition {
+			PropertyAnimation { duration: 1000; }
+			ColorAnimation { duration: 1000; }
+		}
 	}
 
 	Image {
+		id: enlogo;
 		anchors.top: img.bottom;
 		anchors.topMargin: 5;
 		source: "enlogo.png";
 		anchors.horizontalCenter: parent.horizontalCenter;
+		states: State {
+			when: rootWin.fade == true;
+			PropertyChanges { target: enlogo; opacity: 0.2; }
+		}
+		transitions: Transition {
+			PropertyAnimation { duration: 1000; }
+			ColorAnimation { duration: 1000; }
+		}
 	}
 
 	ToolBarLayout {
@@ -81,6 +103,7 @@ PageStackWindow {
 			iconId: "toolbar-back";
 			onClicked: { 
 				pageStack.pop();
+				rootWin.fadeImages();
 			}
 		}
 	}

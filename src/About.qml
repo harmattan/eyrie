@@ -1,28 +1,30 @@
-import QtQuick 1.1
-import com.nokia.meego 1.0
+import QtQuick 1.1;
+import com.nokia.meego 1.0;
 
 Page {
-    id: aboutPage
-    anchors.margins: rootWin.pageMargin
-    tools: commonTools
+	id: aboutPage;
+	anchors.margins: rootWin.pageMargin;
+	tools: commonTools;
 
-    Column {
-        spacing: 10
-        anchors.verticalCenterOffset: 30
-        anchors.centerIn: parent
+	Column {
+		spacing: 10;
+		anchors.verticalCenterOffset: 30;
+		anchors.centerIn: parent;
+		width: parent.width;
 
-        Label {
-            text: "Eyrie"
-            font.pixelSize: 34
-        }
+		Label {
+			width: parent.width;
+			horizontalAlignment: Text.AlignHCenter;
+			text: "Eyrie";
+			font.pixelSize: 34;
+		}
 
-        Label {
-            text: "Released under the GPL, version 3.0 or later."
-        }
+		Label {
+			wrapMode: Text.Wrap;
+			horizontalAlignment: Text.AlignHCenter;
+			width: parent.width;
+			text: "Author: Mike Sheldon <elleo@gnu.org>\n\nReleased under the GPL, version 3.0 or later.";
+		}
 
-        Label {
-            text: "Mike Sheldon <elleo@gnu.org>"
-        }
-
-    }
+	}
 }
