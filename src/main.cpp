@@ -24,10 +24,10 @@ int main(int argc, char *argv[])
 	QDeclarativeView view;
 	view.setSource(QUrl::fromLocalFile(DATADIR "/eyrie/Eyrie.qml"));
 	QObject *root = (QObject*)(view.rootObject());
-	Eyrie ear(root);
+	Eyrie eyrie(root, &view);
 	QObject::connect((QObject*)view.engine(), SIGNAL(quit()), &app, SLOT(quit()));
 	QObject::connect((QObject*)view.engine(), SIGNAL(quit()), &app, SLOT(quit()));
-	QObject::connect(root, SIGNAL(record()), &ear, SLOT(record()));
+	QObject::connect(root, SIGNAL(record()), &eyrie, SLOT(record()));
 
 	view.showFullScreen();
 	int ret = app.exec();

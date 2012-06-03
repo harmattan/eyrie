@@ -13,8 +13,9 @@
 #include "eyrie.h"
 
 
-Eyrie::Eyrie(QObject *parent) : QObject(parent) {
+Eyrie::Eyrie(QObject *parent, QDeclarativeView *v) : QObject(parent) {
 	recbin = NULL;
+	view = v;
 	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(process()));
 }
@@ -33,8 +34,12 @@ void Eyrie::record() {
 	QMetaObject::invokeMethod(parent(), "setStatus", Q_RETURN_ARG(QVariant, ret), Q_ARG(QVariant, "Recording..."));
 	recbin = gst_pipeline_new("pipeline");
 	GError *err = NULL;
-	recbin = gst_parse_launch("autoaudiosrc ! level ! audioconvert ! audioresample ! appsink name=asink caps=audio/x-raw-float,channels=1,rate=11025,width=32,endianness=1234", &err);
+	recbin = gst_parse_launch("autoaudiosrc ! level ! tee name=t   t. ! queue ! audioconvert ! audioresample ! appsink name=asink caps=audio/x-raw-float,channels=1,rate=11025,width=32,endianness=1234  t. ! queue ! audioconvert ! monoscope ! videobalance saturation=0 ! videoflip method=6 ! ffmpegcolorspace ! xvimagesink name=overlay", &err);
 	sink = gst_bin_get_by_name(GST_BIN(recbin), "asink");
+	overlay = gst_bin_get_by_name(GST_BIN(recbin), "overlay");
+	gst_x_overlay_set_xwindow_id(GST_X_OVERLAY(overlay), view->effectiveWinId());
+	printf("Window ID: %d\n", view->effectiveWinId());
+	gst_x_overlay_set_render_rectangle(GST_X_OVERLAY(overlay), 655, 140, 100, 200);
 	gst_element_set_state(recbin, GST_STATE_PLAYING);
 	timer->setSingleShot(true);
 	timer->start(25000);

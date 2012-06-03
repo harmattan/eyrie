@@ -16,6 +16,7 @@ eyrie.cpp
     CONFIG += link_pkgconfig
     PKGCONFIG += gstreamer-0.10
     PKGCONFIG += gstreamer-app-0.10
+    PKGCONFIG += gstreamer-interfaces-0.10
     PKGCONFIG += QJson
     LIBS += libcodegen.so.4
     #VARIABLES

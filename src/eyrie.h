@@ -1,24 +1,28 @@
-#ifndef EARIE_H
-#define EARIE_H
+#ifndef EYRIE_H
+#define EYRIE_H
 
 #include <QObject>
 #include <QString>
 #include <QSettings>
 #include <QtNetwork/QNetworkReply>
+#include <QDeclarativeView>
 #include <QList>
 #include <QTimer>
 #include <gst/gst.h>
+#include <gst/interfaces/xoverlay.h>
 
 class Eyrie : public QObject
 {
 	Q_OBJECT
 public:
-	explicit Eyrie(QObject *parent = 0);
+	explicit Eyrie(QObject *parent, QDeclarativeView *v);
 
 private:
 	GstElement *recbin;
 	GstElement *sink;
+	GstElement *overlay;
 	QTimer *timer;
+	QDeclarativeView *view;
 
 public slots:
 	void record();
@@ -27,4 +31,4 @@ public slots:
 	void showImage(QNetworkReply *reply);
 };
 
-#endif // EARIE_H
+#endif // EYRIE_H
