@@ -9,7 +9,8 @@ Page {
 
 	Column {
 		spacing: 10;
-		anchors.top: parent.top;
+		anchors.bottom: parent.bottom;
+		anchors.bottomMargin: recordTools.height - 20;
 		width: parent.width;
 
 		Label {
@@ -17,6 +18,7 @@ Page {
 			visible: rootWin.showStatus;
 			text: rootWin.status;
 			horizontalAlignment: Text.AlignHCenter;
+			width: parent.width;
 		}
 
 		Row {
