@@ -23,7 +23,7 @@ Page {
 			wrapMode: Text.Wrap;
 			horizontalAlignment: Text.AlignJustify;
 			width: parent.width;
-			text: "Eyrie records audio from your phones microphone. This audio is never stored or transmitted over the Internet. Recorded audio is only ever used for generating acoustic fingerprints, which are used to determine what songs are currently playing nearby. These acoustic fingerprints are sent over the Internet to <a style='color: #999999;' href='http://the.echonest.com'>The EchoNest</a>. It is not possible to reconstruct the recorded audio from acoustic fingerprints.";
+			text: "Eyrie records audio from your phone's microphone. This audio is never stored or transmitted over the Internet. Recorded audio is only ever used for generating acoustic fingerprints, which are used to determine what songs are currently playing nearby. These acoustic fingerprints are sent over the Internet to The EchoNest. It is not possible to reconstruct the recorded audio from acoustic fingerprints.";
 		}
 
 	}
