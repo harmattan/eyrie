@@ -1,5 +1,5 @@
 Source: eyrie
-Section: user/Other
+Section: user/multimedia
 Priority: extra
 Maintainer: Michael Sheldon <elleo@gnu.org>
 Build-Depends: debhelper (>= 7), dpatch, 
